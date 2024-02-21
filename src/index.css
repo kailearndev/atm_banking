@@ -4,7 +4,8 @@
  
 @layer base {
   :root {
-   
+   overflow: hidden;
+   font-family: 'Tilt Neon';
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -74,4 +75,8 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.without-ring {
+  @apply focus:ring-0 focus:ring-offset-0;
 }
