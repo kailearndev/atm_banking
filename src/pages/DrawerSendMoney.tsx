@@ -1,38 +1,53 @@
-import * as React from "react";
-import { Minus, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
+  DrawerTitle
 } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { ComboboxDemo } from "./BankList";
-import { Bar, BarChart, ResponsiveContainer } from "recharts";
+import { cardService } from "@/services/card.service";
+import { CardResponse } from "@/type/card.interface";
+import { useState } from "react";
 
 type DrawerSendMoneyProps = {
   isShow?: boolean;
-  isScrollClose?: boolean;
   isOpen: ((open: boolean) => void) | undefined;
+  data: CardResponse
 };
 
-const DrawerSendMoney = ({
-  isShow,
-  isScrollClose,
-  isOpen,
-}: DrawerSendMoneyProps) => {
- 
-
+const DrawerSendMoney = ({ isShow, isOpen, data }: DrawerSendMoneyProps) => {
+  const [amount, setAmount] = useState<number>(0)
+  const [content, setContent] = useState<string>('');
+  const handleTransfer = async () => {
+    const res = await cardService.transfers({
+      cardNumber: data.cardNumber,
+      nameHolder: data.cardHolder,
+      content: content,
+      type: "send",
+      amount: amount,
+      cardId: data.id,
+      bankId: 22,
+    });
+   if(res) {
+    if (isOpen) {
+      setContent('')
+      setAmount(0)
+      isOpen(false);
+    }
+   }
+  };
   return (
     <div className="pointer-events-none">
-      <Drawer onOpenChange={isOpen} open={isShow} >
-        <DrawerContent className=" ring-offset-0 ring-0" onOpenAutoFocus={(e) => e.preventDefault()}>
+      <Drawer onOpenChange={isOpen} open={isShow}>
+        <DrawerContent
+          className=" ring-offset-0 ring-0"
+          onOpenAutoFocus={(e) => e.preventDefault()}
+        >
           <div className="mx-auto w-full max-w-sm ">
             <DrawerHeader>
               <DrawerTitle>Chuyển tiền</DrawerTitle>
@@ -41,22 +56,28 @@ const DrawerSendMoney = ({
               <ComboboxDemo />
               <div className="flex  border-gray-500 justify-between h-[50px]  rounded-xl items-center">
                 <Input
+                readOnly
                   className="border-0  bg-purple-200 border-gray-500 focus-visible:ring-offset-0 focus-visible:ring-0  w-full"
-                  value={"NGUYEN VAN A"}
-                  placeholder="Nhập Số Tài Khoản"
+                  value={data.cardHolder}
+                  placeholder=""
                 />
               </div>
               <Input
+              readOnly
                 prefix="VND"
                 className="border-0  bg-purple-200 border-gray-500 focus-visible:ring-offset-0 focus-visible:ring-0  w-full"
-                value={"9999999999999"}
-                placeholder="Nhập Số Tài Khoản"
+                value={data.cardNumber}
+                placeholder=""
               />
               <div className="flex  border-gray-500 justify-between rounded-xl items-center">
                 <Input
                   prefix="VND"
                   className="bg-transparent border-0 bg-purple-200  border-gray-500  focus-visible:ring-offset-0 focus-visible:ring-0 "
-                  value={"99.999.999"}
+                  value={amount}
+                  onChange={(e) => {
+                    const newAmount = Number(e.target.value);
+                    setAmount(newAmount)
+                  }}
                   placeholder="Nhập số tiền"
                 />
               </div>
@@ -64,13 +85,17 @@ const DrawerSendMoney = ({
                 <Input
                   prefix="VND"
                   className="bg-transparent border-0 bg-purple-200  border-gray-500  focus-visible:ring-offset-0 focus-visible:ring-0 "
-                  value={"Chuyen tien cf"}
+                  value={content}
                   placeholder="Nội dung"
+                  onChange={(e) => {
+                   const newContent = e.target.value
+                   setContent(newContent)
+                  }}
                 />
               </div>
             </div>
             <DrawerFooter>
-              <Button>Chuyển</Button>
+              <Button onClick={handleTransfer}>Chuyển</Button>
               <DrawerClose asChild>
                 <Button variant="outline">Huỷ</Button>
               </DrawerClose>

@@ -20,25 +20,18 @@ import {
 
 const frameworks = [
   {
-    value: "next.js",
-    label: "Next.js",
+    value: "kaibank",
+    label: "Kai Bank",
   },
   {
-    value: "sveltekit",
-    label: "SvelteKit",
+    value: "kai-group",
+    label: "Kai Group",
   },
   {
-    value: "nuxt.js",
-    label: "Nuxt.js",
+    value: "zi",
+    label: "Zi Bank",
   },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
+  
 ];
 
 export function ComboboxDemo() {
