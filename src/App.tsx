@@ -6,6 +6,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { motion } from "framer-motion";
 import { Fragment, useEffect, useState } from "react";
 import { Outlet, useOutlet } from "react-router-dom";
 import "./App.css";
@@ -14,14 +15,12 @@ import FloatButton from "./components/ui/floatbutton";
 import DrawerSendMoney from "./pages/DrawerSendMoney";
 import { cardService } from "./services/card.service";
 import { CardInitialValue, CardResponse } from "./type/card.interface";
-import { motion } from "framer-motion";
 
 function App() {
   const outlet = useOutlet();
   const AppPage = () => {
     const [dataResponse, setDataResponse] =
       useState<CardResponse>(CardInitialValue);
-    const [clicked, setClicked] = useState(false);
 
     const [modalSendMoney, setModalSendMoney] = useState<boolean>(false);
     const [theme, setTheme] = useState<string>('');
