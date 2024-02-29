@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
 
 const CardDetail = () => {
   const [isClicked, setIsClicked] = useState(false);
