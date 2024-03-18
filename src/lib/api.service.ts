@@ -1,7 +1,7 @@
 import axios  from 'axios'
  
   export const apiService = axios.create({
-    baseURL: 'https://be-bank.kaidev.site/',
+    baseURL: 'https://be.bank.kailearndev.io.vn/',
   timeout: 10000,
  
 });
